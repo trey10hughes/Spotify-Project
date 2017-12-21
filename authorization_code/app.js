@@ -61,7 +61,7 @@ module.exports = function (app, path, bodyParser) {
     //     state: state
     //   }));
     // res.send('linked');
-    res.sendFile(path.join(__dirname, "public/index.html")); 
+    res.sendFile(path.join(__dirname, "public/default.html")); 
     //path to "home page" for the app
     //create a new html page for this, after logging in you should be directed to that page
   });
