@@ -1,0 +1,12 @@
+-search artists in spotify
+-display results in a table
+-user selects an artist, then their albums will appear in the table
+-user selects an album, then the tracks from that album will appear
+-user selects a song, it will play and display the lyrics (called from a song lyrics API)
+-allow the user to search for other songs while current song is playing
+-separate html elements for each relevant piece of data
+	-panel that fills in with rows for each search result
+	-once a result is clicked another panel fills with that artist's albums
+	-once an album is clicked another panel fills with that album's tracks
+	-user can select a track and have it play
+		-display lyrics, progress bar, album cover, song name, album, and artist below the panels that hold the search results
