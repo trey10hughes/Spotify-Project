@@ -6,4 +6,48 @@
 
   </head>
 
-  <h1>We land here after logging in</h1>
+  <body>
+    <div class="container">
+
+		<div class="form-group">
+    		<label for="artist">Search an Artist:</label>
+    		<input type="text" class="form-control" id="artist-input">
+  		</div>
+
+		<button type="button" class="btn btn-primary" id="submit">Submit</button>
+		
+    </div>
+  </body>
+
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+  <script type="text/javascript">
+  	
+
+
+    $("#submit").on('click', function() {
+    	var search = {};
+    	search.queryTerm = $("#artist-input").val().trim();
+    	// console.log("you searched for: " + queryTerm);
+    	// console.log(typeof queryTerm);
+
+    	$.ajax({
+          method: "POST",
+          url: "/spotify",
+          data: search,
+          dataType: "JSON"
+        }).done(function (data) {
+          var test = JSON.stringify(data);
+          console.log(test);
+          console.log("artist search results:");
+          for(var i = 0; i < data.artists.items.length; i++){
+          	console.log((i+1) + ") " + data.artists.items[i].name);
+          }
+          
+        });
+    });
+        //need to figure out how to...
+        //-pass the value of queryTerm taken from search bar into the 'query' for the spotifyClient.search (found in app.js line 33)
+        //-maybe pass it through as a parameter for a function defined in the app.js?
+        //-how to reference a function defined in app.js?
+  </script>

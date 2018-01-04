@@ -8,8 +8,6 @@
  */
 module.exports = function (app, path, bodyParser) {
 
-
-
   var Spotify = require('node-spotify-api');
   var spotifyKeys = {
     id: "33274dd92de5439da8bb2f0506caf104",
@@ -20,7 +18,7 @@ module.exports = function (app, path, bodyParser) {
 
 
   app.get("/", function (req, res) {
-   console.log(res);
+   // console.log(res);
     res.sendFile(path.join(__dirname, "public/index.html"));
     // spotifyClient.search({type: 'track', query: "u2"}, function (error, data) {
     //   if (error) console.log("Spotify error: " + error);
@@ -31,13 +29,27 @@ module.exports = function (app, path, bodyParser) {
 
   });
 
-  app.get("/spotify", function (req, res) {
-    spotifyClient.search({type: 'track', query: "u2"}, function (error, data) {
+  app.post("/spotify", function (req, res) {
+    var search = req.body;
+    console.log(search.queryTerm);
+    spotifyClient.search({query: search.queryTerm, type: 'artist'}, function (error, data) {
       if (error) console.log("Spotify error: " + error);
-      console.log(data);
+      // console.log(data); //searches for tracks instead of artists..?
 
       res.json(data);
     });
+    // spotifyClient.search({type: 'album', query: "how to dismantle an atomic bomb"}, function (error, data) {
+    //   if (error) console.log("Spotify error: " + error);
+    //   console.log(data);
+
+    //   res.json(data);
+    // });
+    // spotifyClient.search({type: 'track', query: "vertigo"}, function (error, data) {
+    //   if (error) console.log("Spotify error: " + error);
+    //   console.log(data);
+
+    //   res.json(data);
+    // });
   });
 
   app.post("/test", function (req, res) {
