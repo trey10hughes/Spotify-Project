@@ -40,6 +40,28 @@ module.exports = function (app, path, bodyParser) {
     });
   });
 
+  app.post("/artist", function (req, res) {
+    var albumSearch = req.body;
+    console.log(albumSearch.queryTerm);
+    spotifyClient.search({query: albumSearch.queryTerm, type: 'album'}, function (error, data) {
+      if (error) console.log("Spotify error: " + error);
+      // console.log(data); //searches for tracks instead of artists..?
+
+      res.json(data);
+    });
+  });
+
+  app.post("/album", function (req, res) {
+    var trackSearch = req.body;
+    console.log(trackSearch.queryTerm);
+    spotifyClient.search({query: trackSearch.queryTerm, type: 'track'}, function (error, data) {
+      if (error) console.log("Spotify error: " + error);
+      // console.log(data); //searches for tracks instead of artists..?
+
+      res.json(data);
+    });
+  });
+
 
   app.post("/test", function (req, res) {
     var clientData = req.body;

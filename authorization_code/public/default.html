@@ -98,34 +98,61 @@
     	var albumSearch = {};
     	albumSearch.queryTerm = $(this).text();	
 
-    	// $.ajax({
-     //      method: "POST",
-     //      url: "/artist",
-     //      data: albumSearch,
-     //      dataType: "JSON"
-     //    }).done(function (data) {
-     //      var test = JSON.stringify(data);
-     //      console.log(test);
-     //      console.log("album search results:");
-     //      for(var i = 0; i < data.albums.items.length; i++){
-     //      	console.log((i+1) + ") " + data.albums.items[i].name);
-     //      	//dynamically create html elements that will serve as buttons to select an artist from the search results
-     //      	var $albumSearchResult = $("<a>");
-     //      	$albumSearchResult.addClass("list-group-item");
-     //      	$albumSearchResult.addClass("albumResult");
-     //      	// $artistSearchResult.attr('id', data.artists.items[i].name);
-     //      	$albumSearchResult.text(data.albums.items[i].name);
-     //      	//append the artist search result to the #artist-display
-     //      	$("#album-display").append($albumSearchResult);
-     //      }
+    	$.ajax({
+          method: "POST",
+          url: "/artist",
+          data: albumSearch,
+          dataType: "JSON"
+        }).done(function (data) {
+          var test = JSON.stringify(data);
+          console.log(test);
+          console.log("album search results:");
+          for(var i = 0; i < data.albums.items.length; i++){
+          	console.log((i+1) + ") " + data.albums.items[i].name);
+          	//dynamically create html elements that will serve as buttons to select an artist from the search results
+          	var $albumSearchResult = $("<a>");
+          	$albumSearchResult.addClass("list-group-item");
+          	$albumSearchResult.addClass("albumResult");
+          	// $artistSearchResult.attr('id', data.artists.items[i].name);
+          	$albumSearchResult.text(data.albums.items[i].name);
+          	//append the artist search result to the #artist-display
+          	$("#album-display").append($albumSearchResult);
+          }
           
-     //    });
+        });
 
     });
 
     //on click for dynamically created album search results
     $(document).on("click", ".albumResult", function() {
     	alert("album result clicked");
+    	console.log($(this).text());
+
+    	var trackSearch = {};
+    	trackSearch.queryTerm = $(this).text();	
+
+    	$.ajax({
+          method: "POST",
+          url: "/album",
+          data: trackSearch,
+          dataType: "JSON"
+        }).done(function (data) {
+          var test = JSON.stringify(data);
+          console.log(test);
+          console.log("track search results:");
+          for(var i = 0; i < data.tracks.items.length; i++){
+          	console.log((i+1) + ") " + data.tracks.items[i].name);
+          	//dynamically create html elements that will serve as buttons to select an artist from the search results
+          	var $trackSearchResult = $("<a>");
+          	$trackSearchResult.addClass("list-group-item");
+          	$trackSearchResult.addClass("albumResult");
+          	// $artistSearchResult.attr('id', data.artists.items[i].name);
+          	$trackSearchResult.text(data.tracks.items[i].name);
+          	//append the artist search result to the #artist-display
+          	$("#track-display").append($trackSearchResult);
+          }
+          
+        });
     });
    	
   </script>
