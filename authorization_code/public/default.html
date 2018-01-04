@@ -15,6 +15,41 @@
   		</div>
 
 		<button type="button" class="btn btn-primary" id="submit">Submit</button>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+      				<div class="panel-heading">Artists</div>
+      				<div class="panel-body">
+      					<div class="list-group" id="artist-display">
+
+						</div>
+      				</div>
+    			</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+      				<div class="panel-heading">Albums</div>
+      				<div class="panel-body">
+      					<div class="list-group" id="album-display">
+
+						</div>
+      				</div>
+    			</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+      				<div class="panel-heading">Tracks</div>
+      				<div class="panel-body">
+      					<div class="list-group" id="track-display">
+
+						</div>
+      				</div>
+    			</div>
+			</div>
+		</div>
 		
     </div>
   </body>
@@ -26,15 +61,15 @@
 
 
     $("#submit").on('click', function() {
-    	var search = {};
-    	search.queryTerm = $("#artist-input").val().trim();
+    	var artistSearch = {};
+    	artistSearch.queryTerm = $("#artist-input").val().trim();
     	// console.log("you searched for: " + queryTerm);
     	// console.log(typeof queryTerm);
 
     	$.ajax({
           method: "POST",
           url: "/spotify",
-          data: search,
+          data: artistSearch,
           dataType: "JSON"
         }).done(function (data) {
           var test = JSON.stringify(data);
@@ -42,12 +77,55 @@
           console.log("artist search results:");
           for(var i = 0; i < data.artists.items.length; i++){
           	console.log((i+1) + ") " + data.artists.items[i].name);
+          	//dynamically create html elements that will serve as buttons to select an artist from the search results
+          	var $artistSearchResult = $("<a>");
+          	$artistSearchResult.addClass("list-group-item");
+          	$artistSearchResult.addClass("artistResult");
+          	// $artistSearchResult.attr('id', data.artists.items[i].name);
+          	$artistSearchResult.text(data.artists.items[i].name);
+          	//append the artist search result to the #artist-display
+          	$("#artist-display").append($artistSearchResult);
           }
           
         });
     });
-        //need to figure out how to...
-        //-pass the value of queryTerm taken from search bar into the 'query' for the spotifyClient.search (found in app.js line 33)
-        //-maybe pass it through as a parameter for a function defined in the app.js?
-        //-how to reference a function defined in app.js?
+
+    //on click for dynamically created artist search results
+    $(document).on("click", ".artistResult", function() {
+    	alert("artist result clicked");
+    	console.log($(this).text());
+
+    	var albumSearch = {};
+    	albumSearch.queryTerm = $(this).text();	
+
+    	// $.ajax({
+     //      method: "POST",
+     //      url: "/artist",
+     //      data: albumSearch,
+     //      dataType: "JSON"
+     //    }).done(function (data) {
+     //      var test = JSON.stringify(data);
+     //      console.log(test);
+     //      console.log("album search results:");
+     //      for(var i = 0; i < data.albums.items.length; i++){
+     //      	console.log((i+1) + ") " + data.albums.items[i].name);
+     //      	//dynamically create html elements that will serve as buttons to select an artist from the search results
+     //      	var $albumSearchResult = $("<a>");
+     //      	$albumSearchResult.addClass("list-group-item");
+     //      	$albumSearchResult.addClass("albumResult");
+     //      	// $artistSearchResult.attr('id', data.artists.items[i].name);
+     //      	$albumSearchResult.text(data.albums.items[i].name);
+     //      	//append the artist search result to the #artist-display
+     //      	$("#album-display").append($albumSearchResult);
+     //      }
+          
+     //    });
+
+    });
+
+    //on click for dynamically created album search results
+    $(document).on("click", ".albumResult", function() {
+    	alert("album result clicked");
+    });
+   	
   </script>

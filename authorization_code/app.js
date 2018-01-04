@@ -30,27 +30,16 @@ module.exports = function (app, path, bodyParser) {
   });
 
   app.post("/spotify", function (req, res) {
-    var search = req.body;
-    console.log(search.queryTerm);
-    spotifyClient.search({query: search.queryTerm, type: 'artist'}, function (error, data) {
+    var artistSearch = req.body;
+    console.log(artistSearch.queryTerm);
+    spotifyClient.search({query: artistSearch.queryTerm, type: 'artist'}, function (error, data) {
       if (error) console.log("Spotify error: " + error);
       // console.log(data); //searches for tracks instead of artists..?
 
       res.json(data);
     });
-    // spotifyClient.search({type: 'album', query: "how to dismantle an atomic bomb"}, function (error, data) {
-    //   if (error) console.log("Spotify error: " + error);
-    //   console.log(data);
-
-    //   res.json(data);
-    // });
-    // spotifyClient.search({type: 'track', query: "vertigo"}, function (error, data) {
-    //   if (error) console.log("Spotify error: " + error);
-    //   console.log(data);
-
-    //   res.json(data);
-    // });
   });
+
 
   app.post("/test", function (req, res) {
     var clientData = req.body;
