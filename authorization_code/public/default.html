@@ -51,7 +51,14 @@
     			</div>
 			</div>
 		</div>
+
+		<div class="col-md-3" id="spotify-player">
+			<!-- dynamically created spotify widget will appear here -->
+    	</div>
 		
+		<div class="col-md-9" id="lyrics-display">
+			<!-- lyrics pulled from lyrics api show up here -->
+		</div> 
     </div>
   </body>
 
@@ -62,6 +69,9 @@
 
 
     $("#submit").on('click', function() {
+    	$("#artist-display").empty();
+    	$("#album-display").empty();
+    	$("#track-display").empty();
     	var artistSearch = {};
     	artistSearch.queryTerm = $("#artist-input").val().trim();
     	// console.log("you searched for: " + queryTerm);
@@ -93,7 +103,9 @@
 
     //on click for dynamically created artist search results
     $(document).on("click", ".artistResult", function() {
-    	alert("artist result clicked");
+    	$("#album-display").empty();
+    	$("#track-display").empty();
+    	console.log("artist result clicked");
     	console.log($(this).text());
 
     	var albumSearch = {};
@@ -126,7 +138,8 @@
 
     //on click for dynamically created album search results
     $(document).on("click", ".albumResult", function() {
-    	alert("album result clicked");
+    	$("#track-display").empty();
+    	console.log("album result clicked");
     	console.log($(this).text());
 
     	var trackSearch = {};
@@ -146,7 +159,7 @@
           	//dynamically create html elements that will serve as buttons to select an artist from the search results
           	var $trackSearchResult = $("<a>");
           	$trackSearchResult.addClass("list-group-item");
-          	$trackSearchResult.addClass("albumResult");
+          	$trackSearchResult.addClass("trackResult");
           	// $artistSearchResult.attr('id', data.artists.items[i].name);
           	$trackSearchResult.text(data.tracks.items[i].name);
           	//append the artist search result to the #artist-display
@@ -155,5 +168,34 @@
           
         });
     });
-   	
+
+    //on click for dynamically created track search results
+    //clicking here will trigger the song and lyrics to be displayed
+    $(document).on("click", ".trackResult", function() {
+    	$("#spotify-player").empty();
+    	console.log("track result clicked");
+    	console.log($(this).text());
+
+    	var trackSearch = {};
+    	trackSearch.queryTerm = $(this).text();	
+    	console.log("you searched: " + trackSearch.queryTerm);
+
+    	//grab the id of the track you selected
+    	//take in the track name and perform a search
+    	//grab first result's id data.tracks.items[0].id
+    	$.ajax({
+          method: "POST",
+          url: "/album",
+          data: trackSearch,
+          dataType: "JSON"
+        }).done(function (data) {
+          var trackid = data.tracks.items[0].id
+          console.log(trackid);
+          
+          var $spotifyPlayer = $("<iframe src='https://open.spotify.com/embed?uri=spotify:track:" + trackid + "'frameborder='0' allowtransparency='true'></iframe>)");
+
+          $("#spotify-player").append($spotifyPlayer);
+          
+        });
+    });
   </script>
