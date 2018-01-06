@@ -214,7 +214,15 @@
             method: 'GET'
           }).done(function(response) {
               console.log(response.lyrics);
-              $("#lyrics-display").text(response.lyrics);
+              var lyrics = response.lyrics;
+
+              for (var i = 0; i < lyrics.length; i++){
+                console.log(lyrics[i]);
+                var display=lyrics.replace(/\n/g,"<br />");
+              }
+
+              $("#lyrics-display").append(display);
+
           });
           
         });
