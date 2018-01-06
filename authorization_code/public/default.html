@@ -182,6 +182,7 @@
     //on click for dynamically created track search results
     //clicking here will trigger the song and lyrics to be displayed
     $(document).on("click", ".trackResult", function() {
+    	$("#lyrics-display").empty();
     	$("#spotify-player").empty();
     	console.log("track result clicked");
     	console.log($(this).text());
