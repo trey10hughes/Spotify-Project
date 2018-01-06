@@ -31,7 +31,7 @@
 
 			<div class="col-md-4">
 				<div class="panel panel-primary">
-      				<div class="panel-heading">Albums</div>
+      				<div class="panel-heading" id="test">Albums</div>
       				<div class="panel-body">
       					<div class="list-group" id="album-display">
 
@@ -52,13 +52,23 @@
 			</div>
 		</div>
 
-		<div class="col-md-3" id="spotify-player">
-			<!-- dynamically created spotify widget will appear here -->
-    	</div>
+		<div class="row">
 		
-		<div class="col-md-9" id="lyrics-display">
-			<!-- lyrics pulled from lyrics api show up here -->
-		</div> 
+			<div class="col-md-3" id="spotify-player">
+				<!-- dynamically created spotify widget will appear here -->
+	    	</div>
+			
+			<div class="col-md-8">
+				<div class="panel panel-primary">
+	      				<div class="panel-heading">Tracks</div>
+	      				<div class="panel-body" id="lyrics-display">
+	      					<div class="list-group" id="track-display">
+
+							</div>
+	      				</div>
+	    		</div>
+			</div> 
+		</div>
     </div>
   </body>
 
@@ -190,11 +200,22 @@
           dataType: "JSON"
         }).done(function (data) {
           var trackid = data.tracks.items[0].id
+          console.log(data);
           console.log(trackid);
           
           var $spotifyPlayer = $("<iframe src='https://open.spotify.com/embed?uri=spotify:track:" + trackid + "'frameborder='0' allowtransparency='true'></iframe>)");
 
           $("#spotify-player").append($spotifyPlayer);
+
+        var trackArtist = data.tracks.items[0].artists[0].name;
+        var trackName = data.tracks.items[0].name;
+    	$.ajax({
+            url: "https://api.lyrics.ovh/v1/" + trackArtist + "/" + trackName + "",
+            method: 'GET'
+          }).done(function(response) {
+              console.log(response.lyrics);
+              $("#lyrics-display").text(response.lyrics);
+          });
           
         });
     });
